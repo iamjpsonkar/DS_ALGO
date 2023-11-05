@@ -196,3 +196,62 @@ print(f"List after sorting {ar}")
 ## Back Tracking
 
 ## Dynamic Programming
+
+## Subarray
+A subarray is a contiguous or non-empty portion of an array. In the context of an array, a subarray is a subset of the original array that maintains the relative order of the elements.
+
+### Maximum Subarray
+Given an integer array nums, find the subarray with the largest sum, and return its sum.
+
+```python
+# Return sum of maximum subarray
+def sumMaxSubarray(ar):
+    n=len(ar)
+    if n<1:
+        return 0
+    c_sum = m_sum = ar[0]
+    for x in ar[1:]:
+        if x>c_sum+x:
+            c_sum=x
+        else:
+            c_sum+=x
+        if c_sum>m_sum:
+            m_sum=c_sum
+    return m_sum
+
+# Example usage:
+nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+max_sum = sumMaxSubarray(nums)
+print("Maximum subarray sum:", max_sum)
+```
+
+Given an integer array nums, find the subarray with the largest sum, and return the subarray.
+
+```python
+# Return the maximum subarray
+def maxSubarray(ar):
+    n=len(ar)
+    if n<1:
+        return 0
+    c_sum = m_sum = ar[0]
+    c_start=0
+    st=end=0
+    for i in range(n):
+        x=ar[i]
+        if x>c_sum+x:
+            c_sum=x
+            c_start = i
+        else:
+            c_sum+=x
+        if c_sum>m_sum:
+            m_sum=c_sum
+            st=c_start
+            end=i
+    return ar[st:end+1]
+
+# Example usage:
+nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+max_subarray = maxSubarray(nums)
+print("Maximum subarray :", max_subarray)
+```
+
