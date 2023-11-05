@@ -255,3 +255,37 @@ max_subarray = maxSubarray(nums)
 print("Maximum subarray :", max_subarray)
 ```
 
+### Maximum Product Subarray
+Given an integer array nums, find a subarray, that has the largest product, and return the product.
+
+```python
+def maxProdSubarray(ar):
+    n = len(ar)
+    if n < 1:
+        return 0
+    
+    max_prod = min_prod = ans = ar[0]
+    
+    for i in range(1,n):
+        num = ar[i]
+        if num<0:
+            max_prod, min_prod = min_prod, max_prod
+        
+        if num > max_prod*num:
+            max_prod = num
+        else:
+            max_prod*=num
+        if num < min_prod*num:
+            min_prod = num
+        else:
+            min_prod*=num
+        
+        if ans<max_prod:
+            ans=max_prod
+    return ans
+
+# Example usage:
+nums = [2,3,-2,4]
+max_prod = maxProdSubarray(nums)
+print("Maximum subarray prod:", max_prod)
+```
