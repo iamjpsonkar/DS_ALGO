@@ -1,70 +1,5 @@
 # Data Structure & Algorithms
 
-## Basic
-
-## String
-
-```python
-s='String'
-```
-
-## List
-```python
-l=list()
-```
-
-## Dictionary
-```python
-d=dict()
-```
-
-## Other Primitive Data types
-
-## Linked List
-```python
-class Node:
-    def __init__(self,val,next=None):
-        self.val=val
-        self.next=next
-
-class LinkedList:
-    def __init__(self,val):
-        self.head=Node(val)
-```
-
-## Tree
-```python
-class Node:
-    def __init__(self,val,left=None,right=None):
-        self.val=val
-        self.left=left
-        self.right=right
-
-class LinkedList:
-    def __init__(self,val):
-        self.head=Node(val)
-```
-
-## Graph
-
-## Traversing
-```python
-l=[1,2,3,4,5]
-n=len(l)
-for i in range(n):
-    print(l[i])
-```
-
-## Searching
-```python
-l=[1,2,3,4,5]
-n=len(l)
-se= 4
-for i in range(n):
-    if l[i]==se:
-        print(i)
-print(-1)
-```
 
 ## Sorting
 
@@ -188,14 +123,108 @@ mergeSort(ar,0,n-1)
 print(f"List after sorting {ar}")
 ```
 
-
-
-
-
-
 ## Back Tracking
 
 ## Dynamic Programming
+
+Dynamic Programming is nothing but recursion + optimization
+
+**Methods of Dynamic Programming**
+1. Memorization (Top > Bottom)
+2. Tabulation (Bottom > Up)
+
+### Fibonacci
+
+#### Using recursion
+```python
+def fib(n):
+    if n<2:
+        return n
+    else:
+        return fib(n-1)+fib(n-2)
+```
+
+#### Using Memorization
+
+```python
+def fib(n):
+    memo = [None for _ in range(1000)]
+    def fib_fun(n):
+        if not memo[n]:
+            if n<2:
+                memo[n] = n
+            else:
+                memo[n] = fib_fun(n-1) + fib_fun(n-2)
+        return memo[n]
+    return fib_fun(n)
+```
+
+#### Using Tabulation
+```python
+def fib(n):
+    DP = [None for _ in range(n)]
+    DP[0]=0
+    DP[1]=1
+    for i in range(2,n+1):
+        DP[i] = DP[i-1]+DP[i-2]
+    return DP[n]
+```
+
+### Longest Common Subsequence
+```python
+# recursive solution
+def lcsRecursion(s1, s2, n, m):
+    if n<1 or m<1:
+        return 0
+    else:
+        if s1[n-1] == s2[m-1]:
+            return 1 + lcsRecursion(s1, s2, n-1, m-1)
+        else:
+            return max(lcsRecursion(s1, s2, n-1, m),lcsRecursion(s1, s2, n, m-1))
+
+def lcsMemorization(s1,s2,n,m):
+    memo = [
+        [None for _ in range(n+1)] for _ in range(m+1)
+    ]
+    def lcs(s1,s2,n,m):
+        if not memo[m][n]:
+            if m == 0 or n == 0:
+                memo[m][n] = 0
+            else:
+                if s1[n-1] == s2[m-1]:
+                    memo[m][n] = 1 + lcs(s1,s2,n-1,m-1)
+                else:
+                    memo[m][n] = max(lcs(s1,s2,n-1,m),lcs(s1,s2,n,m-1))
+        return memo[m][n]
+    return lcs(s1,s2,n,m)
+
+def lcsTabulation(s1,s2,n,m):
+    DP = [
+        [0 for _ in range(n+1)] for _ in range(m+1)
+    ]
+
+    for i in range(1,m+1):
+        for j in range(1,n+1):
+            if s1[j-1] == s2[i-1]:
+                DP[i][j] = 1 + DP[i-1][j-1]
+            else:
+                DP[i][j] = max(DP[i-1][j],DP[i][j-1])
+    return DP[m][n]
+
+s1 = "AGGTAB"
+s2 = "GXTXAYB"
+n = len(s1)
+m = len(s2)
+# ans is 4
+
+print(lcsRecursion(s1, s2, n, m))
+print(lcsMemorization(s1, s2, n, m))
+print(lcsTabulation(s1, s2, n, m))
+
+```
+
+### Coin Change Problem
+
 
 ## Subarray
 A subarray is a contiguous or non-empty portion of an array. In the context of an array, a subarray is a subset of the original array that maintains the relative order of the elements.
