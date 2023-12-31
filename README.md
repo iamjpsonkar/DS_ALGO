@@ -1,4 +1,4 @@
-# Data Structure & Algoritms
+# Data Structure & Algorithms
 
 ## Basic
 
@@ -71,7 +71,7 @@ print(-1)
 Sorting is a technique to sort any list/array either in increasing or decreasing order. There are multiple sorting techniques.
 
 ### Bubble Sort
-- **Mechanism** : Repeatedly swap adjacent elements if they are in the wrong order.
+- **Mechanism**: Repeatedly swap adjacent elements if they are in the wrong order.
 - **Complexity**: `O(n^2)` for average and worst-case, O(n) for best case (already sorted).
 - **Key Point**: Simple but inefficient.
 
@@ -225,7 +225,7 @@ max_sum = sumMaxSubarray(nums)
 print("Maximum subarray sum:", max_sum)
 ```
 
-Given an integer array nums, find the subarray with the largest sum, and return the subarray.
+Given an integer array number, find the subarray with the largest sum, and return the subarray.
 
 ```python
 # Return the maximum subarray
@@ -288,4 +288,359 @@ def maxProdSubarray(ar):
 nums = [2,3,-2,4]
 max_prod = maxProdSubarray(nums)
 print("Maximum subarray prod:", max_prod)
+```
+
+
+## Competitive Programming
+
+### Basic Problems
+
+#### Largest element in the array
+
+#### Check if the array is sorted or not
+
+#### Return the second largest element in the array
+
+#### Remove duplicates from the sorted array
+
+#### Move all zeros at the end
+
+#### Reverse the array
+
+#### Left rotate an array by 1
+
+
+### Advance Problems
+
+#### Left rotate an array by D
+```python
+def reverseArray(ar, s = None, l=None):
+    l = l or len(ar)
+    s = s or 0
+    for i in range((l-s)//2):
+        ar[s+i], ar[l-i-1] = ar[l-i-1], ar[s+i]
+    return ar
+
+def leftRotateByD(ar,D):
+    l = len(ar)
+    ar = reverseArray(ar,0,D)
+    ar = reverseArray(ar,D,l)
+    ar = reverseArray(ar)
+    return ar
+
+ar = leftRotateByD([0,1,2,3,4,5,6,7],3)
+'''
+[1,2,3,4,5,6,7,0]
+[2,3,4,5,6,7,0,1]
+[3,4,5,6,7,0,1,2]
+'''
+print(ar)
+```
+
+#### Leaders of the array
+```python
+def leaders(ar):
+    l = len(ar)
+    ans = [ar[-1]]
+    for i in range(l-2,-1,-1):
+        if ar[i]>ans[-1]:
+            ans.append(ar[i])
+    return ans[::-1]
+
+print(leaders([6,7,1,2,3,4,2,1]))
+```
+
+#### Max Diff ar[i]-ar[j] is max for i>j
+```python
+def maxDiff(ar):
+    res=ar[1]-ar[0]
+    mn = ar[0]
+    for i in range(1,len(ar)):
+        res = max(res, ar[i]-mn)
+        mn = min(ar[i],mn)
+    return res
+print(maxDiff([6,7,1,2,3,4,2,1]))
+```
+
+#### Frequency of Elements in a Sorted Array
+```python
+def frequency(ar):
+    ans = {}
+    ele= ar[0]
+    cnt = 1
+    for i in range(1,len(ar)):
+        if ar[i]==ele:
+            cnt+=1
+        else:
+            ans[ele] = cnt
+            ele = ar[i]
+            cnt =1
+    ans[ele] = cnt
+    return ans
+
+print(frequency([0,0,0,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,4]))
+```
+
+#### Stock Buy and Sell | Max Profit
+```python
+def maxProfitNaive(ar, st, nd):
+    if nd<=st:
+        return 0
+    profit = 0
+    for i in range(st,nd-1):
+        for j in range(i+1,nd):
+            if ar[j]>ar[i]:
+                cur_profit = (ar[j]-ar[i]) + maxProftNaive(ar,st,i-1) + maxProftNaive(ar,j+1,nd)
+                profit = max(profit, cur_profit)
+    return profit
+
+def maxProfit(ar, st, nd): # sell if price graph is going up
+    profit = 0
+    for i in range(1, nd):
+        if ar[i]>ar[i-1]:
+            profit+=(ar[i]-ar[i-1])
+    return profit
+
+price = [2,3,4,1,5,9,2,9]
+st = 0
+nd = len(price)
+
+print(maxProfitNaive(price,st,nd))
+print(maxProfit(price,st,nd))
+```
+
+#### Trapping rain water
+```python
+def trapWater(ar):
+    l = len(ar)
+    lmax = ar[:]
+    rmax = ar[:]
+    for i in range(1,l):
+        lmax[i] = max(lmax[i-1],lmax[i])
+        rmax[l-i-1] = max(rmax[l-i],rmax[l-i-1])
+    ans = 0
+    for i in range(l):
+        ans += (min(lmax[i],rmax[i])-ar[i])
+    return ans
+
+ar = [3,0,2,1,5]
+print(trapWater(ar))
+```
+
+#### Caden's Algorithm
+
+Either extend the current or start a new
+
+#### Max consecutive 1 in a binary array
+```python
+def maxCons1(ar):
+    ans = 0
+    cur = 0
+    for i in range(len(ar)):
+        if ar[i]==1:
+            cur+=1
+        else:
+            ans = max(cur, ans)
+            cur = 0
+    ans = max(cur, ans)
+    return ans
+
+ar = [0,1,1,0,1,1,1,0]
+
+print(maxCons1(ar))
+```
+
+#### Max Subarray Sum
+```python
+def maxSubarraySumNaive(ar):
+    ans = ar[0]
+    for i in range(len(ar)):
+        cur = 0
+        for j in range(i,len(ar)):
+            cur += ar[j]
+            if cur > ans:
+                ans = cur
+    return ans
+
+def maxSubarraySum(ar):
+    max_ending = ar[:]
+    for i in range(1,len(ar)):
+        max_ending[i] = max(max_ending[i-1]+ar[i],ar[i])
+    return max(max_ending)
+
+ar = [1,-2,3,-1,2]
+
+print(maxSubarraySumNaive(ar))
+print(maxSubarraySum(ar))
+```
+
+#### Max length even odd subarray
+```python
+def maxLengthEvenOddSubarrayNaive(ar):
+    ans = 1
+    for i in range(1,len(ar)):
+        cur = 1
+        for j in range(i,len(ar)):
+            if (ar[j-1]%2==0 and ar[j]%2==1) or (ar[j-1]%2==1 and ar[j]%2==0):
+                cur+=1
+            else:
+                ans = max(cur, ans)
+                cur = 1
+        ans = max(cur, ans)
+    return ans
+
+def maxLengthEvenOddSubarray(ar):
+    ans = 1
+    cur = 1
+    for i in range(1,len(ar)):
+        if (ar[i-1]%2==1 and ar[i]%2==0) or (ar[i-1]%2==0 and ar[i]%2==1):
+            cur +=1
+        else:
+            ans = max(cur,ans)
+            cur =1
+    ans = max(cur, ans)
+    return ans
+
+ar = [5,10,6,20,3,8]
+print(maxLengthEvenOddSubarrayNaive(ar))
+print(maxLengthEvenOddSubarray(ar))
+```
+
+#### Max Circular Subarray Sum
+```python
+def maxCircularSubarraySumNaive(ar):
+    ans = ar[0]
+    l = len(ar)
+    for i in range(l):
+        cur_sum = ar[i]
+        cur_max = ar[i]
+        for j in range(1,l):
+            ind = (i+j)%l
+            cur_sum += ar[ind]
+            cur_max = max(cur_sum, cur_max)
+        ans = max(ans, cur_max)
+    return ans
+
+
+def maxCircularSubarraySum(ar):
+    def maxSubarraySum(ar):
+        max_ending = ar[:]
+        for i in range(1, len(ar)):
+            max_ending[i] = max(max_ending[i-1]+ar[i],ar[i])
+        return max(max_ending)
+
+    def minSubarraySum(ar):
+        min_ending = ar[:]
+        for i in range(1,len(ar)):
+            min_ending[i] = min(min_ending[i-1]+ar[i],ar[i])
+        return min(min_ending)
+
+    total = sum(ar)
+    max_sum = maxSubarraySum(ar)
+    min_sum = minSubarraySum(ar)
+    return max(max_sum, total-min_sum)
+
+ar = [5, -2, 3, 4]
+
+print(maxCircularSubarraySumNaive(ar))
+print(maxCircularSubarraySum(ar))
+```
+
+#### Moore's Algorithm
+- Find in 1st part
+- Verify in 2nd Part
+
+#### Find majority element, count>n/2
+```python
+def findMajority(ar):
+    res = 0
+    cnt = 1
+    for i in range(1,len(ar)):
+        if ar[res]==ar[i]:
+            cnt+=1
+        else:
+            cnt -=1
+        if cnt == 0:
+            res = i
+            cnt = 1
+    return res
+
+def verifyMajority(ar,major):
+    cnt =0
+    for x in ar:
+        if x == ar[major]:
+            cnt+=1
+    if cnt>len(ar)//2:
+        return major
+    else:
+        return -1
+
+ar = [6,8,4,8,8]
+
+print(verifyMajority(ar,findMajority(ar)))
+```
+
+#### Sliding window Technique
+##### Maximum sum of consecutive K numbers
+```python
+def maxConsecutiveKsum(ar, k):
+    ksum = 0
+    for i in range(k):
+        ksum+=ar[i]
+    ans = ksum
+    for i in range(k,len(ar)):
+        ksum += ar[i]
+        ksum -= ar[i-k]
+        ans = max(ans,ksum)
+    return ans
+
+ar = [1,8,30,-5,20,7]
+k =3
+print(maxConsecutiveKsum(ar, k))
+```
+
+#### Prefix Sum
+
+Calculate sum prefix data, to answer multiple queries on a fixed data
+
+#### Sum b/w 2 indexs of array
+```python
+def getSum(ar,queries):
+    prefix_sum = ar[:]
+    for i in range(1,len(ar)):
+        prefix_sum[i] += prefix_sum[i-1]
+    prefix_sum = [0] +prefix_sum
+    print(prefix_sum)
+    for l,r in queries:
+        print(prefix_sum[r+1]-prefix_sum[l])
+        
+ar = [2,8,3,9,6,5,4]
+queries = [(0,2),(1,3),(2,6)]
+
+getSum(ar,queries)
+```
+
+
+#### Max occurring element b/w given queries
+```python
+def maxOccuring(queries):
+    ar = [0 for _ in range(10)]
+    for l,r in queries:
+        ar[l]+=1
+        ar[r+1]-=1
+    prefix_sum = ar[:]
+    for i in range(1,len(ar)):
+        prefix_sum[i] += prefix_sum[i-1]
+    print(prefix_sum)
+    mx = 0
+    ans = 0
+    for i in range(len(prefix_sum)):
+        if prefix_sum[i]>mx:
+            mx = prefix_sum[i]
+            ans = i
+    return ans
+
+queries =[(1,3),(2,5),(3,7)]
+
+print(maxOccuring(queries))
 ```
