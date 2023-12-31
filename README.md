@@ -224,6 +224,77 @@ print(lcsTabulation(s1, s2, n, m))
 ```
 
 ### Coin Change Problem
+```python
+def coinChangeRecursion(coins,sum,n):
+    if n == 0 or sum <0:
+        return 0
+    if sum == 0:
+        return 1
+    else:
+        return coinChangeRecursion(coins,sum-coins[n-1],n) + coinChangeRecursion(coins,sum,n-1)
+
+
+def coinChangeDP(coins,sum, n):
+    DP = [0 for _ in range(sum+1)]
+    DP[0] = 1
+    for i in range(n):
+        for j in range(coins[i],sum+1):
+            DP[j] += DP[j-coins[i]]
+    return DP[sum]
+
+coins = [1, 2, 3]
+sum = 5
+n = len(coins)
+# solution is 5
+print(coinChangeRecursion(coins,sum,n))
+print(coinChangeDP(coins,sum,n))
+```
+
+### Edit Distance
+```python
+def editDistanceRecursion(s,p,n,m):
+    if n==0:
+        return m
+    if m == 0:
+        return n
+    if s[n-1] == p[m-1]:
+        return editDistanceRecursion(s,p,n-1,m-1)
+    else:
+        return 1 + min(
+            editDistanceRecursion(s,p,n-1,m),
+            editDistanceRecursion(s,p,n,m-1),
+            editDistanceRecursion(s,p,n-1,m-1)
+        )
+
+def editDistanceDP(s,p,n,m):
+    DP = [
+        [0 for _ in range(n+1)] for _ in range(m+1)
+    ]
+    for i in range(m+1):
+        DP[i][0] = i
+    for i in range(n+1):
+        DP[0][i] = i
+
+    for i in range(1,m+1):
+        for j in range(1,n+1):
+            if s[j-1] == p[i-1]:
+                DP[i][j] = DP[i-1][j-1]
+            else:
+                DP[i][j] = 1 + min(
+                    DP[i-1][j],
+                    DP[i][j-1],
+                    DP[i-1][j-1]
+                )
+    return DP[m][n]
+
+s = "sit"
+p = "kiit"
+n = len(s)
+m = len(p)
+
+print(editDistanceRecursion(s,p,n,m))
+print(editDistanceDP(s,p,n,m))
+```
 
 
 ## Subarray
