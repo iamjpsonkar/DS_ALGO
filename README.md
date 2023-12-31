@@ -123,6 +123,30 @@ mergeSort(ar,0,n-1)
 print(f"List after sorting {ar}")
 ```
 
+### Quick Sort
+- **Mechanism**: Divides the array into two partitions and recursively sorts them.
+- **Complexity**: `O(n log n)` on average, O(n^2) in the worst case, O(n) for the best case (with good pivot selection).
+- **Key Point**: Efficient on average, but can degrade in the worst case.
+
+```python
+def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quicksort(left) + middle + quicksort(right)
+
+# Example usage:
+import random
+my_list = [random.randrange(10, 100) for _ in range(random.randrange(10, 15))]
+print(f"List before sorting: {my_list}")
+sorted_list = quicksort(my_list)
+print(f"List after sorting: {sorted_list}")
+```
+
+
 ## Back Tracking
 
 ## Dynamic Programming
