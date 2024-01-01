@@ -146,6 +146,50 @@ sorted_list = quicksort(my_list)
 print(f"List after sorting: {sorted_list}")
 ```
 
+### Heap Sort
+
+**Mechanism**: Efficiently sorts an array using a binary heap data structure.
+
+**Complexity**: `O(n log n)`.
+
+**Key Points**:
+- Builds a max heap.
+- Extracts elements one by one from the heap.
+
+```python
+def heapify(ar, n, i):
+    largest = i
+    left_child = 2**i
+    right_child = 2**i + 1
+    
+    if left_child<n and ar[left_child]>ar[largest]:
+        largest = left_child
+    if right_child<n and ar[right_child]>ar[largest]:
+        largest = right_child
+    
+    if i!=largest:
+        ar[i], ar[largest] = ar[largest], ar[i]
+        heapify(ar,n,largest)
+
+def heap_sort(arr):
+    n = len(ar)
+    
+    for i in range(n//2-1,-1,-1):
+        heapify(arr,n,i)
+    
+    for i in range(n-1,0,-1):
+        arr[i],arr[0] = arr[0],arr[i]
+        heapify(arr,i,0)
+    return arr
+
+
+# Example usage:
+import random
+my_list = [random.randrange(10, 100) for _ in range(random.randrange(10, 15))]
+print(f"List before sorting: {my_list}")
+sorted_list = heap_sort(my_list)
+print(f"List after sorting: {sorted_list}")
+```
 
 ## Back Tracking
 
